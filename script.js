@@ -61,7 +61,7 @@ function playRound(playerSelection = "", computerSelection = computerPlay()) {
   ) {
     return (result = "Tie");
   } else if (playerSelection === null || playerSelection === ``) {
-      console.log("You've pressed Cancel.\nThis Round will not count.");
+    console.log("You've pressed Cancel.\nThis Round will not count.");
     return alert("You've pressed Cancel.\nThis Round will not count.");
   } else {
     return alert("Error");
