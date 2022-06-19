@@ -9,10 +9,35 @@ function computerPlay() {
 
 //     Make your function’s playerSelection parameter case-insensitive (so users can input rock, ROCK, RocK or any other variation).
 
-
 // Important note: you want to return the results of this function call, not console.log() them. You’re going to use what you return later on, so let’s test this function by using console.log to see the results:
 
-function playRound(playerSelection = ``, computerSelection = computerPlay()) {
+//function for player choice
+function getPlayerSelection() {
+  let action = prompt(`Rock, Paper, Scissors? `, ``);
+
+  //if player presses cancel
+  if (action === null) {
+    console.log("You've pressed cancel, bye!");
+    return;
+  }
+  //if player doesn't put in anything
+  else if (action === ``) {
+    console.log("You've chosen nothing, try again");
+    return getPlayerSelection();
+  } else {
+    action = action.toUpperCase();
+    if (action === "ROCK" || action === "PAPER" || action === "SCISSORS") {
+      return action;
+    }
+    // if player writes anything besides rock paper scissors
+    else {
+      console.log("Must write rock, paper or scissors, try again");
+      return getPlayerSelection();
+    }
+  }
+}
+
+function playRound(playerSelection = "", computerSelection = computerPlay()) {
   playerSelection = playerSelection.toUpperCase();
   computerSelection = computerSelection.toUpperCase();
   let result = ``;
@@ -35,6 +60,9 @@ function playRound(playerSelection = ``, computerSelection = computerPlay()) {
     (playerSelection === "SCISSORS" && computerSelection === "SCISSORS")
   ) {
     return (result = "Tie");
+  } else if (playerSelection === null || playerSelection === ``) {
+      console.log("You've pressed Cancel.\nThis Round will not count.");
+    return alert("You've pressed Cancel.\nThis Round will not count.");
   } else {
     return alert("Error");
   }
@@ -67,7 +95,8 @@ function game(rounds) {
   } else {
     //plays the rounds
     for (let i = 1; i <= rounds; i++) {
-      playerSelection = prompt(`ROUND[${i}] -> Rock, Paper, Scissors? `, ``);
+      //playerSelection = prompt(`ROUND[${i}] -> Rock, Paper, Scissors? `, ``);
+      playerSelection = getPlayerSelection();
       computerSelection = computerPlay();
       match = playRound(playerSelection, computerSelection);
       switch (match) {
