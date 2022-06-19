@@ -73,28 +73,31 @@ function game(rounds) {
       switch (match) {
         case "Player":
           player += 1;
-          result += `ROUND[${i}] -> PLAYER: ${playerSelection} vs COMP: ${computerSelection} --> WINNER: ${match} \n`;
+          result = `ROUND[${i}] -> PLAYER: ${playerSelection} vs COMP: ${computerSelection} --> WINNER: ${match} \n`;
+          console.log(result);
           break;
         case "Computer":
           comp += 1;
-          result += `ROUND[${i}] -> PLAYER: ${playerSelection} vs COMP: ${computerSelection} --> WINNER: ${match} \n`;
+          result = `ROUND[${i}] -> PLAYER: ${playerSelection} vs COMP: ${computerSelection} --> WINNER: ${match} \n`;
+          console.log(result);
           break;
         case "Tie":
           tie += 1;
-          result += `ROUND[${i}] -> PLAYER: ${playerSelection} vs COMP: ${computerSelection} --> ${match} \n`;
+          result = `ROUND[${i}] -> PLAYER: ${playerSelection} vs COMP: ${computerSelection} --> ${match} \n`;
+          console.log(result);
           break;
       }
     }
 
     //determines the winner
     if (player > comp) {
-      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
+      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
     } else if (player < comp) {
-      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
+      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
     } else if (player === comp) {
-      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp}\nTIE, play again`;
+      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}\nTIE, play again`;
     } else {
-      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
+      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
     }
     console.log(result);
   }
