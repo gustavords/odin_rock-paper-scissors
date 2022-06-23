@@ -1,5 +1,6 @@
 // Your game is going to play against the computer, so begin with a function called computerPlay that will randomly return either ‘Rock’, ‘Paper’ or ‘Scissors’. We’ll use this function in the game to make the computer’s play. Tip: use the console to make sure this is returning the expected output before moving to the next step!
 
+//returns: random rock paper or scissor
 function computerPlay() {
   const action = [`Rock`, `Paper`, `Scissors`];
   return action[Math.floor(Math.random() * action.length)];
@@ -11,7 +12,7 @@ function computerPlay() {
 
 // Important note: you want to return the results of this function call, not console.log() them. You’re going to use what you return later on, so let’s test this function by using console.log to see the results:
 
-//function for player choice
+//function for player choice through prompt
 function getPlayerSelection() {
   let action = prompt(`Rock, Paper, Scissors? `, ``);
 
@@ -37,7 +38,7 @@ function getPlayerSelection() {
   }
 }
 
-//returns: Winner of round
+//returns: Winner of Round
 function playRound(playerSelection = "", computerSelection = computerPlay()) {
   playerSelection = playerSelection.toUpperCase();
   computerSelection = computerSelection.toUpperCase();
@@ -80,34 +81,21 @@ function playRound(playerSelection = "", computerSelection = computerPlay()) {
 // Feel free to re-work your previous functions if you need to. Specifically, you might want to change the return value to something more useful.
 // Feel free to create more “helper” functions if you think it would be useful.
 
-
 //input: amount of desired rounds
-//second: method with 2 inputs
 //output: winner of number of rounds
 //default is a round
-function game(rounds = 1, player = 0, comp = 0) {
+function game(rounds = 1) {
   rounds = +rounds;
-  player;
-  comp;
+  let player = 0;
+  let comp = 0;
   let tie = 0;
   let result = ``;
   let playerSelection;
   let computerSelection;
   let match;
 
-  if (rounds === 1 && player > 0 && comp > 0) {
-    if (player > comp) {
-      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
-    } else if (player < comp) {
-      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
-    } else if (player === comp) {
-      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}\nTIE, play again`;
-    } else {
-      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
-    }
-  }
   //just so no one can place negative numbers
-  else if (rounds <= 0) {
+ if (rounds <= 0) {
     alert("sorry bruv play again, has to be 1 or more");
   } else {
     //plays the rounds
@@ -157,10 +145,11 @@ const round_element = document.createElement(`p`);
 let playerSelection = ``;
 let result = ``;
 let counter = 1;
-let player = 0;
-let comp = 0;
-let tie = 0;
-let points;
+// let player = 0;
+// let comp = 0;
+// let tie = 0;
+// let points;
+let roundWinners = [];
 
 function setPlayerSelectionButton(playerSelection) {
   this.playerSelection = playerSelection;
@@ -175,67 +164,88 @@ function displayWinner() {
   result_placement.appendChild(result_element);
 }
 
-function displayRounds(i) {
-  round_element.innerText += `ROUND[${i}]: ${result}\n`;
+function displayRounds(counter) {
+  round_element.innerText += `ROUND[${counter}]: ${result}\n`;
   result_placement.appendChild(round_element);
-}
 
-
-function gameWinner(points) {
-  let player = points[0];
-  let comp = points[1];
-  let tie = points[3];
-  let result = ``;
-  if (player > comp) {
-    result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
-  } else if (player < comp) {
-    result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
-  } else if (player === comp) {
-    result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nTIE, play again`;
-  } else {
-    result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
+  if (counter == 5) {
+    round_element.innerText += `\n${gameResults(roundWinners)}\n\n`;
+    result_placement.appendChild(round_element);
   }
-  return result;
 }
+
+
+function gameResults(roundWinners) {
+  let result = ``;
+  let player = 0;
+  let comp = 0;
+  let tie = 0;
+
+  if (roundWinners.length < 3) {
+    console.log(`not yet, too small, array.length:${roundWinners.length}`);
+  } else {
+    for (const winner of roundWinners) {
+      switch (winner) {
+        case "Player":
+          player += 1;
+          break;
+        case "Computer":
+          comp += 1;
+          break;
+        case "Tie":
+          tie += 1;
+          break;
+      }
+    }
+    ///if player =2 and tie equal 2 in game of five player
+
+    //since its  a game of 5 first to 3 win automatically
+    if (player == 3 || comp == 3) {
+      console.log(`player:${player}  comp:${comp} comp or player===3 auto win`);
+      if (player === 3) {
+        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
+      } else {
+        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
+      }
+    }
+    //if the game goes longer than 4 rounds
+    else if (roundWinners.length < 5) {
+      console.log(`not yet, too small, array.length:${roundWinners.length}`);
+    } else {
+      if (player > comp) {
+        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
+      } else if (player < comp) {
+        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
+      } else if (player === comp) {
+        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nTIE, play again`;
+      } else {
+        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
+      }
+    }
+    console.log(`player:${player}, comp:${comp}, tie:${tie}`);
+    console.log(result);
+    return result;
+  }
+}
+
+///where it actually happens
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     setPlayerSelectionButton(button.id);
     result = playRound(getPlayerSelectionButton());
 
-    switch (result) {
-      case "Player":
-        player += 1;
-        break;
-      case "Computer":
-        comp += 1;
-        break;
-      case "Tie":
-        tie += 1;
-        break;
-    }
+    ///where all other functions should run
+    roundWinners.push(result); //places winners in sequence of wins
+    gameResults(roundWinners);
+
     displayWinner();
     displayRounds(counter);
-    console.log(
-      `typeof -> ${typeof getPlayerSelectionButton()} and button.id-> ${getPlayerSelectionButton()}, WINNER->${result}`
-    );
     counter++;
-    console.log(
-      `counter:${counter}, player:${player}, comp:${comp}, tie:${tie}, point:${points}`
-    );
-
-    points = [player, comp, tie];
 
     if (counter > 5) {
+      roundWinners = [];
       counter = 1;
-      console.log(gameWinner(points));
-
-      round_element.innerText += `\n${gameWinner(points)}\n`;
-      result_placement.appendChild(round_element);
-
-      player = 0;
-      comp = 0;
-      tie = 0;
     }
   });
 });
