@@ -95,7 +95,7 @@ function game(rounds = 1) {
   let match;
 
   //just so no one can place negative numbers
- if (rounds <= 0) {
+  if (rounds <= 0) {
     alert("sorry bruv play again, has to be 1 or more");
   } else {
     //plays the rounds
@@ -142,14 +142,21 @@ const buttons = document.querySelectorAll("button");
 const result_placement = document.querySelector("div.result");
 const result_element = document.createElement("p");
 const round_element = document.createElement(`p`);
+
+//for replay section
+const replay_location = document.createElement(`div`);
+document.querySelector(`body`).appendChild(replay_location);
+replay_location.classList.add(`replay`);
+const replay_placement = document.querySelector(`div.replay`);
+const replay_element = document.createElement(`p`);
+const replay_button = document.createElement(`button`);
+
 let playerSelection = ``;
+let computerSelection = ``;
 let result = ``;
 let counter = 1;
-// let player = 0;
-// let comp = 0;
-// let tie = 0;
-// let points;
 let roundWinners = [];
+let points = [];
 
 function setPlayerSelectionButton(playerSelection) {
   this.playerSelection = playerSelection;
@@ -159,93 +166,130 @@ function getPlayerSelectionButton() {
   return this.playerSelection;
 }
 
+function displayReplay() {
+  document.querySelector(`#rock`).disabled = true;
+  document.querySelector(`#paper`).disabled = true;
+  document.querySelector(`#scissors`).disabled = true;
+  replay_element.innerText = `Would like to replay?`;
+  replay_button.innerText = "?REPLAY?";
+  replay_placement.appendChild(replay_element);
+  replay_placement.appendChild(replay_button);
+  replay_button.addEventListener(`click`, () => {
+    location.reload();
+  });
+}
+
 function displayWinner() {
-  result_element.innerText = result;
+  result_element.innerText = result + " won the round!!!";
   result_placement.appendChild(result_element);
 }
 
-function displayRounds(counter) {
-  round_element.innerText += `ROUND[${counter}]: ${result}\n`;
+function displayRounds() {
+  round_element.innerText = `${gameResults(roundWinners)}`;
   result_placement.appendChild(round_element);
-
-  if (counter == 5) {
-    round_element.innerText += `\n${gameResults(roundWinners)}\n\n`;
-    result_placement.appendChild(round_element);
-  }
 }
 
+function clearDisplay() {
+  result_element.innerText = `click to play again`;
+  result_placement.appendChild(result_element);
+  round_element.innerText = ``;
+  result_placement.appendChild(round_element);
+}
 
 function gameResults(roundWinners) {
+  let roundResult = ``;
   let result = ``;
   let player = 0;
   let comp = 0;
   let tie = 0;
+  let counter = 1;
 
-  if (roundWinners.length < 3) {
+  // if (roundWinners.length < 3) {
+  //   console.log(`not yet, too small, array.length:${roundWinners.length}`);
+  // } else {
+  for (const winner of roundWinners) {
+    switch (winner) {
+      case "Player":
+        player += 1;
+        roundResult = `ROUND[${counter}] -> PLAYER: ${getPlayerSelectionButton()} vs COMP: ${computerSelection} --> WINNER: ${winner} \n`;
+        break;
+      case "Computer":
+        comp += 1;
+        roundResult = `ROUND[${counter}] -> PLAYER: ${getPlayerSelectionButton()} vs COMP: ${computerSelection} --> WINNER: ${winner} \n`;
+        break;
+      case "Tie":
+        tie += 1;
+        roundResult = `ROUND[${counter}] -> PLAYER: ${getPlayerSelectionButton()} vs COMP: ${computerSelection} --> WINNER: ${winner} \n`;
+        break;
+    }
+    result += roundResult;
+    points = [player, comp, tie]; //this lets button loop know when to end
+    console.log(points);
+    counter++;
+  }
+  ///if player or comp =2 and tie equal 2 in game of five player, auto win
+  if ((player == 2 && tie == 2 && comp == 0) || (comp == 2 && tie == 2 && player == 0)) {
+    console.log(`player:${player}  comp:${comp} comp or player===3 auto win`);
+    if (player === 2) {
+      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
+    } else {
+      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
+    }
+  }
+  //since its  a game of 5 first to 3 win automatically
+  if (player == 3 || comp == 3) {
+    console.log(`player:${player}  comp:${comp} comp or player===3 auto win`);
+    if (player === 3) {
+      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
+    } else {
+      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
+    }
+  }
+  //if the game goes longer than 4 rounds
+  else if (roundWinners.length < 5) {
     console.log(`not yet, too small, array.length:${roundWinners.length}`);
   } else {
-    for (const winner of roundWinners) {
-      switch (winner) {
-        case "Player":
-          player += 1;
-          break;
-        case "Computer":
-          comp += 1;
-          break;
-        case "Tie":
-          tie += 1;
-          break;
-      }
-    }
-    ///if player =2 and tie equal 2 in game of five player
-
-    //since its  a game of 5 first to 3 win automatically
-    if (player == 3 || comp == 3) {
-      console.log(`player:${player}  comp:${comp} comp or player===3 auto win`);
-      if (player === 3) {
-        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
-      } else {
-        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
-      }
-    }
-    //if the game goes longer than 4 rounds
-    else if (roundWinners.length < 5) {
-      console.log(`not yet, too small, array.length:${roundWinners.length}`);
+    if (player > comp) {
+      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
+    } else if (player < comp) {
+      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
+    } else if (player === comp) {
+      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nTIE, play again`;
     } else {
-      if (player > comp) {
-        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
-      } else if (player < comp) {
-        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
-      } else if (player === comp) {
-        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nTIE, play again`;
-      } else {
-        result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
-      }
+      result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
     }
-    console.log(`player:${player}, comp:${comp}, tie:${tie}`);
-    console.log(result);
-    return result;
   }
+  console.log(`player:${player}, comp:${comp}, tie:${tie}`);
+  console.log(result);
+  return result;
+  //}
 }
 
-///where it actually happens
+///where the game actually happens
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     setPlayerSelectionButton(button.id);
-    result = playRound(getPlayerSelectionButton());
 
-    ///where all other functions should run
+    //so we get a different result each time
+    computerSelection = computerPlay();
+    result = playRound(getPlayerSelectionButton(), computerSelection);
+
     roundWinners.push(result); //places winners in sequence of wins
-    gameResults(roundWinners);
-
     displayWinner();
-    displayRounds(counter);
+    displayRounds();
     counter++;
 
-    if (counter > 5) {
+    if (
+      counter > 5 ||
+      points[0] === 3 ||
+      points[1] === 3 ||
+      (points[0] === 2 && points[2] === 2) ||
+      (points[1] === 2 && points[2] === 2)
+    ) {
       roundWinners = [];
       counter = 1;
+      displayReplay();
     }
   });
 });
