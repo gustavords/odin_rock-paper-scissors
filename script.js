@@ -37,6 +37,7 @@ function getPlayerSelection() {
   }
 }
 
+//returns: Winner of round
 function playRound(playerSelection = "", computerSelection = computerPlay()) {
   playerSelection = playerSelection.toUpperCase();
   computerSelection = computerSelection.toUpperCase();
@@ -79,18 +80,34 @@ function playRound(playerSelection = "", computerSelection = computerPlay()) {
 // Feel free to re-work your previous functions if you need to. Specifically, you might want to change the return value to something more useful.
 // Feel free to create more “helper” functions if you think it would be useful.
 
-function game(rounds) {
+
+//input: amount of desired rounds
+//second: method with 2 inputs
+//output: winner of number of rounds
+//default is a round
+function game(rounds = 1, player = 0, comp = 0) {
   rounds = +rounds;
-  let player = 0;
-  let comp = 0;
+  player;
+  comp;
   let tie = 0;
   let result = ``;
   let playerSelection;
   let computerSelection;
   let match;
 
+  if (rounds === 1 && player > 0 && comp > 0) {
+    if (player > comp) {
+      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
+    } else if (player < comp) {
+      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
+    } else if (player === comp) {
+      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}\nTIE, play again`;
+    } else {
+      result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
+    }
+  }
   //just so no one can place negative numbers
-  if (rounds <= 0) {
+  else if (rounds <= 0) {
     alert("sorry bruv play again, has to be 1 or more");
   } else {
     //plays the rounds
@@ -128,16 +145,97 @@ function game(rounds) {
     } else {
       result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
     }
-    console.log(result);
   }
+  console.log(result);
+}
+
+////////UI Stuff
+const buttons = document.querySelectorAll("button");
+const result_placement = document.querySelector("div.result");
+const result_element = document.createElement("p");
+const round_element = document.createElement(`p`);
+let playerSelection = ``;
+let result = ``;
+let counter = 1;
+let player = 0;
+let comp = 0;
+let tie = 0;
+let points;
+
+function setPlayerSelectionButton(playerSelection) {
+  this.playerSelection = playerSelection;
+}
+
+function getPlayerSelectionButton() {
+  return this.playerSelection;
+}
+
+function displayWinner() {
+  result_element.innerText = result;
+  result_placement.appendChild(result_element);
+}
+
+function displayRounds(i) {
+  round_element.innerText += `ROUND[${i}]: ${result}\n`;
+  result_placement.appendChild(round_element);
 }
 
 
-////////UI Stuff
-const buttons = document.querySelectorAll('button');
+function gameWinner(points) {
+  let player = points[0];
+  let comp = points[1];
+  let tie = points[3];
+  let result = ``;
+  if (player > comp) {
+    result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
+  } else if (player < comp) {
+    result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nCOMPUTER IS THE WINNER`;
+  } else if (player === comp) {
+    result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nTIE, play again`;
+  } else {
+    result = `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
+  }
+  return result;
+}
 
 buttons.forEach((button) => {
-  button.addEventListener('click', () => {
-    console.log(button.id);
+  button.addEventListener("click", () => {
+    setPlayerSelectionButton(button.id);
+    result = playRound(getPlayerSelectionButton());
+
+    switch (result) {
+      case "Player":
+        player += 1;
+        break;
+      case "Computer":
+        comp += 1;
+        break;
+      case "Tie":
+        tie += 1;
+        break;
+    }
+    displayWinner();
+    displayRounds(counter);
+    console.log(
+      `typeof -> ${typeof getPlayerSelectionButton()} and button.id-> ${getPlayerSelectionButton()}, WINNER->${result}`
+    );
+    counter++;
+    console.log(
+      `counter:${counter}, player:${player}, comp:${comp}, tie:${tie}, point:${points}`
+    );
+
+    points = [player, comp, tie];
+
+    if (counter > 5) {
+      counter = 1;
+      console.log(gameWinner(points));
+
+      round_element.innerText += `\n${gameWinner(points)}\n`;
+      result_placement.appendChild(round_element);
+
+      player = 0;
+      comp = 0;
+      tie = 0;
+    }
   });
 });
