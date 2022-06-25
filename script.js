@@ -138,15 +138,13 @@ function game(rounds = 1) {
 }
 
 ////////UI Stuff
+const rounds_display = document.querySelector(`.rounds`);
 const buttons = document.querySelectorAll("button");
 const result_placement = document.querySelector("div.result");
 const result_element = document.createElement("p");
 const round_element = document.createElement(`p`);
 
 //for replay section
-const replay_location = document.createElement(`div`);
-document.querySelector(`body`).appendChild(replay_location);
-replay_location.classList.add(`replay`);
 const replay_placement = document.querySelector(`div.replay`);
 const replay_element = document.createElement(`p`);
 const replay_button = document.createElement(`button`);
@@ -155,7 +153,11 @@ let playerSelection = ``;
 let computerSelection = ``;
 let result = ``;
 let counter = 1;
+
+//cannot be constant as they will reload
 let roundWinners = [];
+let playerSelectionChoices = [];
+let computerSelectionChoices = [];
 let points = [];
 
 function setPlayerSelectionButton(playerSelection) {
@@ -167,9 +169,12 @@ function getPlayerSelectionButton() {
 }
 
 function displayReplay() {
+  //disables options buttons 
   document.querySelector(`#rock`).disabled = true;
   document.querySelector(`#paper`).disabled = true;
   document.querySelector(`#scissors`).disabled = true;
+
+  //creates replay button
   replay_element.innerText = `Would like to replay?`;
   replay_button.innerText = "?REPLAY?";
   replay_placement.appendChild(replay_element);
@@ -180,55 +185,59 @@ function displayReplay() {
 }
 
 function displayWinner() {
-  result_element.innerText = result + " won the round!!!";
+  if (result === "Tie")
+    result_element.innerText = result + " boohoo try again!!";
+  else {
+    result_element.innerText = result + " won the round!!!";
+  }
   result_placement.appendChild(result_element);
 }
 
 function displayRounds() {
-  round_element.innerText = `${gameResults(roundWinners)}`;
-  result_placement.appendChild(round_element);
-}
-
-function clearDisplay() {
-  result_element.innerText = `click to play again`;
-  result_placement.appendChild(result_element);
-  round_element.innerText = ``;
-  result_placement.appendChild(round_element);
+  let display = ``;
+  for (let i = 0; i < roundWinners.length; i++) {
+    display += `ROUND[${i + 1}] -> PLAYER: ${
+      playerSelectionChoices[i]
+    } vs COMP: ${computerSelectionChoices[i]} --> WINNER: ${
+      roundWinners[i]
+    } \n`;
+  }
+  round_element.innerText = `${display}\n${gameResults(roundWinners)}`;
+  rounds_display.appendChild(round_element);
 }
 
 function gameResults(roundWinners) {
-  let roundResult = ``;
+  // let roundResult = ``;
   let result = ``;
   let player = 0;
   let comp = 0;
   let tie = 0;
   let counter = 1;
 
-  // if (roundWinners.length < 3) {
-  //   console.log(`not yet, too small, array.length:${roundWinners.length}`);
-  // } else {
+  //loops through winner results to determine points
   for (const winner of roundWinners) {
     switch (winner) {
       case "Player":
         player += 1;
-        roundResult = `ROUND[${counter}] -> PLAYER: ${getPlayerSelectionButton()} vs COMP: ${computerSelection} --> WINNER: ${winner} \n`;
         break;
       case "Computer":
         comp += 1;
-        roundResult = `ROUND[${counter}] -> PLAYER: ${getPlayerSelectionButton()} vs COMP: ${computerSelection} --> WINNER: ${winner} \n`;
         break;
       case "Tie":
         tie += 1;
-        roundResult = `ROUND[${counter}] -> PLAYER: ${getPlayerSelectionButton()} vs COMP: ${computerSelection} --> WINNER: ${winner} \n`;
         break;
     }
-    result += roundResult;
-    points = [player, comp, tie]; //this lets button loop know when to end
-    console.log(points);
+
+    points = [player, comp, tie]; //this lets button loop know when to end, its resets every iteration
+    console.log(`points[]:${points}`);
     counter++;
   }
+
   ///if player or comp =2 and tie equal 2 in game of five player, auto win
-  if ((player == 2 && tie == 2 && comp == 0) || (comp == 2 && tie == 2 && player == 0)) {
+  if (
+    (player == 2 && tie == 2 && comp == 0) ||
+    (comp == 2 && tie == 2 && player == 0)
+  ) {
     console.log(`player:${player}  comp:${comp} comp or player===3 auto win`);
     if (player === 2) {
       result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp} \nPLAYER IS THE WINNER`;
@@ -259,27 +268,33 @@ function gameResults(roundWinners) {
       result += `\nPlayer Wins: ${player} vs Comp Wins: ${comp}  Ties: ${tie}\nTIE, play again`;
     }
   }
-  console.log(`player:${player}, comp:${comp}, tie:${tie}`);
-  console.log(result);
+  // console.log(`player:${player}, comp:${comp}, tie:${tie}`);
+  // console.log(result);
   return result;
   //}
 }
 
 ///where the game actually happens
-
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
+    //player's play
     setPlayerSelectionButton(button.id);
+    playerSelectionChoices.push(getPlayerSelectionButton());
 
-    //so we get a different result each time
+    //computers' play
     computerSelection = computerPlay();
-    result = playRound(getPlayerSelectionButton(), computerSelection);
+    computerSelectionChoices.push(computerSelection);
 
+    //where results are evaluated
+    result = playRound(getPlayerSelectionButton(), computerSelection);
     roundWinners.push(result); //places winners in sequence of wins
+
+    //dynamically displayed into page
     displayWinner();
     displayRounds();
-    counter++;
+    counter++; //to know when to end the 5 rounds
 
+    //when to replay and reset
     if (
       counter > 5 ||
       points[0] === 3 ||
@@ -288,6 +303,8 @@ buttons.forEach((button) => {
       (points[1] === 2 && points[2] === 2)
     ) {
       roundWinners = [];
+      playerSelectionChoices = [];
+      computerSelectionChoices = [];
       counter = 1;
       displayReplay();
     }

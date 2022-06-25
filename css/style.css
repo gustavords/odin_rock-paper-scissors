@@ -1,0 +1,60 @@
+* {
+  /* background-color: transparent; */
+}
+
+.title, .result {
+  text-align: center;
+}
+
+.buttonActions {
+  display: flex;
+  justify-content: center;
+  height: auto; /*keeps thinks from overflowing*/
+  gap: 2em;
+  flex-wrap: wrap; /*if wrap, goes over text*/
+  /* background-color: pink; */
+  padding: 1em;
+  margin: 1em;
+}
+
+
+#rock {
+  background-image: url("../images/rock2.png");
+}
+
+#paper {
+  background-image: url("../images/paper.png");
+}
+
+#scissors {
+  background-image: url("../images/scissors.png");
+}
+
+
+#rock,
+#paper,
+#scissors {
+  margin: 1em;
+  padding: 5em;
+  background-size: 100% 100%;
+  background-image: no-repeat;
+  border: 0px;
+  display: block;
+  background-color: transparent; /*keeps png background out*/
+  cursor: pointer;
+  color: transparent;
+}
+
+#rock:hover,
+#paper:hover,
+#scissors:hover {
+  /*zooms in*/
+  -ms-transform: scale(1.5); /* IE 9 */
+  -webkit-transform: scale(1.5); /* Safari 3-8 */
+  transform: scale(1.5);
+
+  background-color: palevioletred;
+  /*adds border around text*/
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  color: gold;
+}

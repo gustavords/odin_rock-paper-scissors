@@ -4,24 +4,26 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script async src="./script.js"></script>
-    <link rel="stylesheet" href="./css/style.css"
     <title>Odin's Rock Paper Scissors Game</title>
+    <script async src="./script.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <h1>Rock Paper Scissors</h1>
+    <h1 class="title">Rock Paper Scissors</h1>
     <p>Play against the computer, see who bests who in 5 Rounds</p>
-   
+    <div class="result"><img></div>
 
-    </div>  
-    <div class="options">
+    <div class="options buttonActions">
       <button id="rock">Rock</button>
       <button id="paper">Paper</button>
       <button id="scissors">Scissor</button>
     </div>
-    <div class="result"></div>
-    <hr>
-    <h3> Old version of the game, feel free to play :)</h3>
+
+    <div class="rounds"></div>
+    <div class="replay"></div>
+
+    <hr />
+    <h3>Old version of the game, feel free to play :)</h3>
     <p>
       this is the rock paper scissors game, open your console (F12)
       <br />
@@ -33,6 +35,5 @@
       <br />
       Write rock, paper, or scissors.
     </p>
-
   </body>
 </html>
