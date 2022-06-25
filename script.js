@@ -238,17 +238,17 @@ function displayFinalResult() {
   let finalResult = gameResults(roundWinners);
 
   if (finalResult.match("COMPUTER IS THE WINNER")) {
-    winnerImage_element.setAttribute(`src`, `../images/computer.png`);
+    winnerImage_element.setAttribute(`src`, `./images/computer.png`);
     winnerImage_element.setAttribute(`alt`, `computer.png`);
     result_placement.style.cssText = "background-color: gold;"
     finalResult = "COMPUTER HAS WON THE GAME";
   } else if (finalResult.match("PLAYER IS THE WINNER")) {
-    winnerImage_element.setAttribute(`src`, `../images/you.png`);
+    winnerImage_element.setAttribute(`src`, `./images/you.png`);
     winnerImage_element.setAttribute(`alt`, `you.png`);
     result_placement.style.cssText = "background-color: gold;"
     finalResult = "PLAYER HAS WON THE GAME";
   } else {
-    winnerImage_element.setAttribute(`src`, `../images/tie_game.png`);
+    winnerImage_element.setAttribute(`src`, `./images/tie_game.png`);
     winnerImage_element.setAttribute(`alt`, `tie_game.png`);
     result_placement.style.cssText = "background-color: lightblue;"
     finalResult = "ITS A TIE";
