@@ -142,7 +142,11 @@ const rounds_display = document.querySelector(`.rounds`);
 const buttons = document.querySelectorAll("button");
 const result_placement = document.querySelector("div.result");
 const result_element = document.createElement("p");
-const round_element = document.createElement(`p`);
+const round_element = document.createElement(`div`);
+
+//for winner of round section
+// const winnerImage_element = document.createElement(`img`);
+const winnerImage_element = document.querySelector(`.result > img`); ///CHANGE NAME
 
 //for replay section
 const replay_placement = document.querySelector(`div.replay`);
@@ -169,14 +173,27 @@ function getPlayerSelectionButton() {
 }
 
 function displayReplay() {
-  //disables options buttons 
+  //disables options buttons
   document.querySelector(`#rock`).disabled = true;
   document.querySelector(`#paper`).disabled = true;
   document.querySelector(`#scissors`).disabled = true;
 
+  //changes color
+  document.querySelector(`#rock`).style.cssText =
+    "mix-blend-mode: difference; background-color:black;";
+  document.querySelector(`#paper`).style.cssText =
+    "mix-blend-mode: difference; background-color:black;";
+  document.querySelector(`#scissors`).style.cssText =
+    "mix-blend-mode: difference; background-color:black;";
+
+  //cancels hover
+  document.querySelector(`#rock`).setAttribute(`class`, `nohover`);
+  document.querySelector(`#paper`).setAttribute(`class`, `nohover`);
+  document.querySelector(`#scissors`).setAttribute(`class`, `nohover`);
+
   //creates replay button
-  replay_element.innerText = `Would like to replay?`;
-  replay_button.innerText = "?REPLAY?";
+  replay_element.innerText = `Would you like to replay?`;
+  replay_button.innerText = "REPLAY?";
   replay_placement.appendChild(replay_element);
   replay_placement.appendChild(replay_button);
   replay_button.addEventListener(`click`, () => {
@@ -185,25 +202,59 @@ function displayReplay() {
 }
 
 function displayWinner() {
-  if (result === "Tie")
-    result_element.innerText = result + " boohoo try again!!";
-  else {
+  if (result === "Computer") {
+    winnerImage_element.setAttribute(`src`, `../images/computer.png`);
+    winnerImage_element.setAttribute(`alt`, `computer.png`);
     result_element.innerText = result + " won the round!!!";
+  } else if (result === "Player") {
+    winnerImage_element.setAttribute(`src`, `../images/you.png`);
+    winnerImage_element.setAttribute(`alt`, `you.png`);
+    result_element.innerText = result + " won the round!!!";
+  } else {
+    winnerImage_element.setAttribute(`src`, `../images/tie_game.png`);
+    winnerImage_element.setAttribute(`alt`, `tie_game.png`);
+    result_element.innerText = result + " boohoo try again!!";
   }
   result_placement.appendChild(result_element);
 }
 
 function displayRounds() {
-  let display = ``;
+  let display = `<tr><th>Round</th> <th>Player Choice</th> <th>Computer Choice</th> <th>Winner of Round</th> </tr>`;
+
   for (let i = 0; i < roundWinners.length; i++) {
-    display += `ROUND[${i + 1}] -> PLAYER: ${
+    display += `    <tr><td>${i + 1}</td>  <td>${
       playerSelectionChoices[i]
-    } vs COMP: ${computerSelectionChoices[i]} --> WINNER: ${
+    }</td>  <td>${computerSelectionChoices[i]} </td> <td>${
       roundWinners[i]
-    } \n`;
+    }</td> </tr>`;
   }
-  round_element.innerText = `${display}\n${gameResults(roundWinners)}`;
+  round_element.innerHTML = `<table> ${display}</table> </br>${gameResults(
+    roundWinners
+  )}</br> `;
   rounds_display.appendChild(round_element);
+}
+
+function displayFinalResult() {
+  let finalResult = gameResults(roundWinners);
+
+  if (finalResult.match("COMPUTER IS THE WINNER")) {
+    winnerImage_element.setAttribute(`src`, `../images/computer.png`);
+    winnerImage_element.setAttribute(`alt`, `computer.png`);
+    result_placement.style.cssText = "background-color: gold;"
+    finalResult = "COMPUTER HAS WON THE GAME";
+  } else if (finalResult.match("PLAYER IS THE WINNER")) {
+    winnerImage_element.setAttribute(`src`, `../images/you.png`);
+    winnerImage_element.setAttribute(`alt`, `you.png`);
+    result_placement.style.cssText = "background-color: gold;"
+    finalResult = "PLAYER HAS WON THE GAME";
+  } else {
+    winnerImage_element.setAttribute(`src`, `../images/tie_game.png`);
+    winnerImage_element.setAttribute(`alt`, `tie_game.png`);
+    result_placement.style.cssText = "background-color: lightblue;"
+    finalResult = "ITS A TIE";
+  }
+  result_element.innerText = finalResult;
+  result_placement.appendChild(result_element);
 }
 
 function gameResults(roundWinners) {
@@ -302,6 +353,8 @@ buttons.forEach((button) => {
       (points[0] === 2 && points[2] === 2) ||
       (points[1] === 2 && points[2] === 2)
     ) {
+
+      displayFinalResult();
       roundWinners = [];
       playerSelectionChoices = [];
       computerSelectionChoices = [];
