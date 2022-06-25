@@ -203,15 +203,15 @@ function displayReplay() {
 
 function displayWinner() {
   if (result === "Computer") {
-    winnerImage_element.setAttribute(`src`, `../images/computer.png`);
+    winnerImage_element.setAttribute(`src`, `./images/computer.png`);
     winnerImage_element.setAttribute(`alt`, `computer.png`);
     result_element.innerText = result + " won the round!!!";
   } else if (result === "Player") {
-    winnerImage_element.setAttribute(`src`, `../images/you.png`);
+    winnerImage_element.setAttribute(`src`, `./images/you.png`);
     winnerImage_element.setAttribute(`alt`, `you.png`);
     result_element.innerText = result + " won the round!!!";
   } else {
-    winnerImage_element.setAttribute(`src`, `../images/tie_game.png`);
+    winnerImage_element.setAttribute(`src`, `./images/tie_game.png`);
     winnerImage_element.setAttribute(`alt`, `tie_game.png`);
     result_element.innerText = result + " boohoo try again!!";
   }
