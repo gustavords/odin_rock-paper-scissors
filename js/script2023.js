@@ -1,7 +1,7 @@
 
-console.log(singleRound(`rock`));
-console.log(singleRound(`PAPER`));
-console.log(singleRound(`scisSor`));
+console.log(playRound(`rock`));
+console.log(playRound(`PAPER`));
+console.log(playRound(`scisSor`));
 
 
 function getComputerChoice() {
@@ -18,7 +18,7 @@ function getComputerChoice() {
     }
 }
 
-function singleRound(playerSelection, computerSelection = getComputerChoice()) {
+function playRound(playerSelection, computerSelection = getComputerChoice()) {
 
     let winningChoice;
     let result = `player: ${playerSelection}\ncomp: ${computerSelection}\n`;
