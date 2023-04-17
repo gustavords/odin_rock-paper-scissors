@@ -6,11 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors UI</title>
+    <link rel="stylesheet" href="css/style2023.css">
     <script async src="./js/script2023.js"></script>
 </head>
 
 <body>
-    <h1>Rock Paper Scissors</h1>
+    <!-- <h1>Rock Paper Scissors</h1>
 
     <button id="rock_btn">rock</button> 
     <button id="paper_btn">paper</button>
@@ -22,8 +23,39 @@
     <br>
     <div id="winnerDisplay"></div>
     <br>
-    <div id="endGame"></div>
-    
+    <div id="endGame"></div> -->
+
+    <header>
+        <h1>Rock Paper Scissors</h1>
+    </header>
+
+    <div id="versus">
+        <div class="versus_img"><img src="/images/you.png" alt="you.png"></div>
+        <div id="versus_display">
+            <p><span id="vs">VS</span></p>
+            <p id="round">00</p>
+            <p id="winner">000000</p>
+            <div id="endGame"></div>
+        </div>
+        <div class="versus_img"><img src="/images/computer.png" alt="computer.png"></div>
+    </div>
+
+    <div class="game_pad">
+        <div id="buttons">
+            <button class="rps_btn" id="rock">rock</button>
+            <button class="rps_btn" id="paper">paper</button>
+            <button class="rps_btn" id="scissor">scissor</button>
+        </div>
+        <div id="scoreBoard">
+            <table id="scoreTable">
+                <tr>
+                    <th>Round</th>
+                    <th>Player Score</th>
+                    <th>Computer Score</th>
+                    <th>Tie Score</th>
+                </tr>
+        </div>
+    </div>
 
 </body>
 

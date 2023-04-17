@@ -1,7 +1,18 @@
 
 let compScore = 0,
     playerScore = 0,
-    tiePoints = 0;
+    tiePoints = 0,
+    round = 1;
+
+const buttons = document.querySelectorAll(`button`);
+
+// we use the .forEach method to iterate through each button
+buttons.forEach((button) => {
+    // and for each one we add a 'click' listener
+    button.addEventListener('click', () => {
+        game(button.innerText);
+    });
+});
 
 function getComputerChoice() {
     let range = 3; //0,1,2
@@ -66,39 +77,20 @@ function game(playerSelection) {
     else if (points == `comp`) compScore += 1;
     else tiePoints += 1;
 
-    //why does the switch not work??
-    // switch (points = true) {
-    //     case (points == `player`):
-    //         playerScore += 1;
-    //         break;
-    //     case (points == `comp`):
-    //         compScore += 1;
-    //         break;
-    //     default:
-    //         tiePoints += 1;
-    // }
-
     console.log(`compScore:${compScore}\nplayerScore:${playerScore}\ntieScore:${tiePoints}\n`);
     appendScore(`compScore:${compScore}\nplayerScore:${playerScore}\ntieScore:${tiePoints}\n`);
 
     //logic set for 5 rounds
     //two separate if-statements for readability
     if (tiePoints > 2 || compScore > 2 || playerScore > 2) {
-        scoreTally();
+        declareWinner();
     }
     else if (tiePoints == 2 && compScore == 2 || tiePoints == 2 && playerScore == 2) {
-        scoreTally();
+        declareWinner();
     }
-    
-    //messes up for some reason
-    // if (tiePoints > 2 || compScore > 2 || playerScore > 2 
-    //     || tiePoints == 2 && compScore == 2 || tiePoints == 2 && playerScore == 2) {
-    //     scoreTally();
-    // }
-
 }
 
-function scoreTally() {
+function declareWinner() {
     let result = ``;
     if (compScore > playerScore) {
         result += `comp wins game`;
@@ -132,42 +124,65 @@ function gameEnd() {
 }
 
 function appendRound(text) {
-    const roundDisplay = document.getElementById(`roundDisplay`);
-    roundDisplay.innerText = text;
-}
+    // const roundDisplay = document.getElementById(`roundDisplay`);
+    // roundDisplay.innerText = text;
+    const round = document.getElementById(`round`);
+    round.innerText = text;
 
+}
+//TODO
 function appendScore(text) {
     // const scoreBoard = document.querySelector(`#scoreDisplay`);
-    const scoreDisplay = document.getElementById(`scoreDisplay`);
-    scoreDisplay.innerText = text;
+    // const scoreDisplay = document.getElementById(`scoreDisplay`);
+    // scoreDisplay.innerText = text;
+
+    const scoreBoard = document.getElementById(`scoreBoard`);
+    scoreBoard.innerText = text;
+    const scoreTable = document.getElementById(`scoreTable`);
+    // scoreTable
+
 }
 
 function appendWinner(text) {
     // const scoreBoard = document.querySelector(`#scoreDisplay`);
-    const winnerDisplay = document.getElementById(`winnerDisplay`);
-    winnerDisplay.innerText = text;
+    // const winnerDisplay = document.getElementById(`winnerDisplay`);
+    // winnerDisplay.innerText = text;
+    const winner = document.getElementById(`winner`);
+    winner.innerText = text;
+}
+//TODO
+function addRow(tableID) {
+    // Get a reference to the table
+    let tableRef = document.getElementById(tableID);
+
+    // Insert a row at the end of the table
+    let newRow = tableRef.insertRow(-1);
+
+    // Insert a cell in the row at index 0
+    let roundCell = newRow.insertCell(0),
+        pcCell = newRow.insertCell(1),
+        ccCell = newRow.insertCell(2)
+    winnerCell = newRow.insertCell(3);
+
+    // Append a text node to the cell
+    // let newText = document.createTextNode("New bottom row");
+    // roundCell.appendChild(newText);
+    // pcCell.appendChild(newText);
+    // ccCell.appendChild(newText);
+    // winnerCell.appendChild(newText);
+
+    roundCell.innerText = round.toString();
+    pcCell.innerText = "test01";
+    ccCell.innerText = "test02";
+    round++;
+
 }
 
-//buttons
+// Call addRow() with the table's ID
+addRow("scoreTable");
+addRow("scoreTable");
 
-// const btn = document.querySelector('#btn');
-// btn.addEventListener('click', function (e) {
-//   console.log(e.target);
-// });
 
-const buttons = document.querySelectorAll(`button`);
-
-// we use the .forEach method to iterate through each button
-buttons.forEach((button) => {
-
-    // and for each one we add a 'click' listener
-    button.addEventListener('click', () => {
-        // console.log(button.id);
-        // console.log(button.innerText);
-        // playRound(button.innerText);
-        game(button.innerText);
-    });
-});
 
 
 
