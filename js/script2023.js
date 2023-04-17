@@ -42,7 +42,7 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
     }
 
     if (playerSelection == winningChoice) {
-        consoleMessage += `player (${playerSelection}) has WON.`;
+        consoleMessage += `PLAYER (${playerSelection}) has won round.`;
         result = `player`;
     }
     else if (winningChoice == `tie`) {
@@ -50,7 +50,7 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
         result = `tie`;
     }
     else {
-        consoleMessage += `comp (${computerSelection}) has WON,`;
+        consoleMessage += `COMP (${computerSelection}) has won round,`;
         result = `comp`;
     }
 
@@ -64,7 +64,8 @@ function game() {
     let compScore = 0,
         playerScore = 0,
         tiePoints = 0,
-        playerSelection = ``;
+        playerSelection = ``,
+        result = ``;
 
     let x = 0
     while (x < 5) {
@@ -73,12 +74,30 @@ function game() {
         //     playerSelection = prompt(`Try Again\nType in either: Rock, Paper or Scissor`, ``);
         // }
         let points = playRound(playerSelection);
-        
-        if(points == `player`) playerScore += 1;
-        else if(points == `comp`) compScore += 1;
+
+        if (points == `player`) playerScore += 1;
+        else if (points == `comp`) compScore += 1;
         else tiePoints += 1;
         console.log(`compScore:${compScore}\nplayerScore:${playerScore}\ntieScore:${tiePoints}\n`);
-        x++;
+
+        if (tiePoints > 2 || compScore > 2 || playerScore > 2) {
+            break;
+        }
+        else if (tiePoints == 2 && compScore == 2 || tiePoints == 2 && playerScore == 2){
+            break;
+        }
+            x++;
     }
+
+    if (compScore > playerScore) {
+        result += `comp wins game`;
+    }
+    else if (playerScore > compScore) {
+        result += `player wins game`;
+    }
+    else { result += `tie game, sorry` }
+
+    return console.log(result);
+
 }
 
