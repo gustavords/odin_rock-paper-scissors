@@ -20,12 +20,38 @@ header>h1 {
     padding: .25em;
 }
 
+#container {
+    background-color: coral;
+    margin: 0;
+    padding: 1em;
+    ;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap-reverse;
+}
+
+#rps {
+    background-color: blueviolet;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 2;
+    height: 100%;
+    width: 100%;
+}
+
 #versus {
     background-color: aquamarine;
     margin: 0;
     padding: 1em;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+    /* height: 100%; */
+    width: 100%;
 
 }
 
@@ -36,9 +62,11 @@ header>h1 {
 }
 
 .versus_img {
-    background-color: red;
-    max-width: 250px;
-    height: 200px;
+    background-color: aliceblue;
+    max-width: 275px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .versus_img>img {
@@ -47,44 +75,61 @@ header>h1 {
 }
 
 #versus_display {
-    max-width: 300px;
+    max-width: 265px;
+    height: 200px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 #versus_display #vs {
-    font-size: 56px;
+    padding: 0;
+    font-size: 62px;
     font-weight: 900;
     font-style: oblique;
 }
+
+
 
 .game_pad {
     background-color: chartreuse;
     margin: 0;
     padding: 1em;
+    height: 350px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    flex-wrap: wrap;
+    width: 100%;
+    min-width: 450px;
 }
 
 #buttons {
-    /* border: solid 1px black; */
-    height: 200px;
-    width: 25%;
+    border: solid 1px black;
+    background-color: white;
+    height: 100%;
+    width: 100%;
     /*maybe change*/
     margin: 0;
     padding: .25em;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     /* align-items: stretch; */
-    gap:.75em;
+    gap: .75em;
 }
 
 .rps_btn {
     flex: auto;
+    min-height: 150px;
+    min-width: 150px;
     border: none;
     margin: .25em;
+    font-size: large;
+    font-weight: 700;
 }
 
 /*button images*/
@@ -114,7 +159,12 @@ header>h1 {
 
 #rock:hover,
 #paper:hover,
-#scissor:hover {
+#scissor:hover,
+#vs,
+#round,
+#winner,
+#playerChoice,
+#compChoice {
     /*zooms in*/
     -ms-transform: scale(1.5);
     /* IE 9 */
@@ -128,15 +178,34 @@ header>h1 {
     color: gold;
 }
 
+/* js appended */
+.nohover {
+    cursor: not-allowed;
+    pointer-events: none;
+}
 
 #scoreBoard {
     border: solid 1px black;
     max-width: 500px;
     margin: 1em;
     padding: 1em;
-    flex: 1.5;
+    flex: 1;
 }
 
 #endGame {
     background-color: red;
+    /* width: 100%;
+    height: 100%; */
+
+    /* margin: 0; */
+}
+
+#endGame button {
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+footer {
+    background-color: crimson;
 }
