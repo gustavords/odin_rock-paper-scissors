@@ -155,6 +155,14 @@ function declareWinner() {
     winner.style.cssText = `background-color: rgba(255, 0, 0, 0.82);
     font-size:28px;`;
 
+    // //colour options
+    // rgba(255, 108, 0, 0.24)
+
+    // rgba(0, 16, 255, 0.78) blue
+
+    // rgba(255, 24, 0, 0.41)
+    // rgba(255, 0, 0, 0.82)
+
     // appendWinner(result);
     gameEnd();
 }
