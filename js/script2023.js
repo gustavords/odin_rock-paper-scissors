@@ -79,10 +79,13 @@ function appendRoundResults([playerSelection, computerSelection, result]) {
     const compChoice = document.getElementById(`compChoice`);
     const playerChoice = document.getElementById(`playerChoice`);
     theRound.innerText = `Round: ${round.toString()}`;
+    theRound.style.cssText = `text-decoration: underline; background-color: rgba(10, 5, 14, 0.462);`
     playerChoice.innerText = `Player: ${playerSelection}`;
+    playerChoice.style.cssText = `background-color: rgba(10, 5, 14, 0.462);`;
     compChoice.innerText = `Comp: ${computerSelection}`;
-    
-    if(result == `tie`)appendWinner(`Result: ${result.toUpperCase()}`);
+    compChoice.style.cssText = `background-color: rgba(10, 5, 14, 0.462);`;
+
+    if (result == `tie`) appendWinner(`Result: ${result.toUpperCase()}`);
     else appendWinner(`${result.toUpperCase()} Wins Round`);
 
 }
@@ -93,10 +96,13 @@ function game(playerSelection) {
     if (points == `player`) playerScore += 1;
     else if (points == `comp`) compScore += 1;
     else tiePoints += 1;
-    round++;
 
     console.log(`compScore:${compScore}\nplayerScore:${playerScore}\ntieScore:${tiePoints}\n`);
-    appendScore(`compScore:${compScore}\nplayerScore:${playerScore}\ntieScore:${tiePoints}\n`);
+    appendScore(`compScore:${compScore}\nplayerScore:${playerScore}\ntieScore:${tiePoints}\n`, [compScore, playerScore, tiePoints]);
+
+    round++;
+
+
 
     //logic set for 5 rounds
     //two separate if-statements for readability
@@ -106,8 +112,12 @@ function game(playerSelection) {
     else if (tiePoints == 2 && compScore == 2 || tiePoints == 2 && playerScore == 2) {
         declareWinner();
     }
+    else if (playerScore == 2 && compScore == 2 && tiePoints == 1) {
+        declareWinner();
+    }
 
-    return console.log([playerScore, compScore, tiePoints]);
+    console.log([playerScore, compScore, tiePoints])
+    return [playerScore, compScore, tiePoints];
 }
 
 //how is this working?!?!?
@@ -138,7 +148,14 @@ function declareWinner() {
     }
 
     console.log(result);
-    appendWinner(result);
+
+    //appends winner and changes color
+    const winner = document.getElementById(`winner`);
+    winner.innerText = result;
+    winner.style.cssText = `background-color: rgba(255, 0, 0, 0.82);
+    font-size:28px;`;
+
+    // appendWinner(result);
     gameEnd();
 }
 
@@ -168,24 +185,27 @@ function gameEnd() {
 
 
 //TODO
-function appendScore(text) {
+function appendScore(text, roundPoints) {
     // const scoreBoard = document.querySelector(`#scoreDisplay`);
     // const scoreDisplay = document.getElementById(`scoreDisplay`);
     // scoreDisplay.innerText = text;
 
-    const scoreBoard = document.getElementById(`scoreBoard`);
-    scoreBoard.innerText = text;
-    const scoreTable = document.getElementById(`scoreTable`);
-    // scoreTable
+    // const scoreBoard = document.getElementById(`scoreBoard`);
+    // scoreBoard.innerText = text;
+    addRow(`scoreTable`, roundPoints)
+    const smallScoreBoard = document.getElementById(`smallScoreBoard`);
+    smallScoreBoard.innerText = text;
 
 }
 
+//create other function just for the end winner, this is for round winner
 function appendWinner(text) {
     // const scoreBoard = document.querySelector(`#scoreDisplay`);
     // const winnerDisplay = document.getElementById(`winnerDisplay`);
     // winnerDisplay.innerText = text;
     const winner = document.getElementById(`winner`);
     winner.innerText = text;
+    winner.style.cssText = `background-color: rgba(255, 108, 0, 0.24);`;
 }
 
 
@@ -199,7 +219,8 @@ function appendWinner(text) {
 
 
 //TODO
-function addRow(tableID, [], []) {
+function addRow(tableID, games) {
+    let roundStat = games;
     // Get a reference to the table
     let tableRef = document.getElementById(tableID);
 
@@ -207,10 +228,10 @@ function addRow(tableID, [], []) {
     let newRow = tableRef.insertRow(-1);
 
     // Insert a cell in the row at index 0
-    let roundCell = newRow.insertCell(0),
-        psCell = newRow.insertCell(1),
-        csCell = newRow.insertCell(2)
-    tsCell = newRow.insertCell(3);
+    let roundCell = newRow.insertCell(0);
+    psCell = newRow.insertCell(1),
+        csCell = newRow.insertCell(2),
+        tsCell = newRow.insertCell(3);
 
     // Append a text node to the cell
     // let newText = document.createTextNode("New bottom row");
@@ -219,13 +240,15 @@ function addRow(tableID, [], []) {
     // ccCell.appendChild(newText);
     // winnerCell.appendChild(newText);
 
-    roundCell.innerText = round.toString();
-    pcCell.innerText = "test01";
-    ccCell.innerText = "test02";
+    roundCell.innerText = `${round.toString()} *`;
+    psCell.innerText = `${roundStat[0]}`;
+    csCell.innerText = `${roundStat[1]}`;
+    tsCell.innerText = `${roundStat[2]}`;
+
 }
 
 // Call addRow() with the table's ID
-// addRow("scoreTable");
+// addRow("scoreTable", games(`rock`));
 // addRow("scoreTable");
 
 // //rewriting game() for the tableScore, but not working,
@@ -233,8 +256,8 @@ function games(playerSelection) {
     let points = playRound(playerSelection)[2];
     let plScr = 0,
         coScr = 0,
-        tPnt = 0,
-        rds = 1;
+        tPnt = 0;
+    // rds = rounds;
 
     if (points == `player`) plScr += 1;
     else if (points == `comp`) coScr += 1;
@@ -253,7 +276,7 @@ function games(playerSelection) {
     // }
     // declareWinner2();
 
-    return points = [plScr, coScr, tPnt];
+    return [plScr, coScr, tPnt];
 }
 
 
